@@ -14,9 +14,17 @@
   <body>
     <h1>reviews INDEX</h1>
     <hr>
-    <h3>Hello, {{ user }}</h3>
-    {% if request.user.is_authenticated  %}
-    <a href="{% url 'accounts:update' %}" method="POST" class="btn btn-secondary mb-2">UPDATE</a>
+    <h3>Hello, <a href="{% url 'accounts:mypg' %}">{{ user }}</a></h3>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'reviews:create' %}" method="POST" class="btn btn-primary mb-2">CREATE</a>
+    {% for review in reviews %}
+    <ul>
+      <li>리뷰 제목 : <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a></li>
+      <li>영화 제목 : {{ review.movie }}</li>
+    </ul>
+    <hr>
+    {% endfor %}
+    <a href="{% url 'accounts:update' %}" class="btn btn-secondary mb-2">UPDATE</a>
     <form action="{% url 'accounts:logout' %}" method="POST">
       {% csrf_token %}
       <input type="submit" value="LOGOUT" class="btn btn-secondary mb-2">

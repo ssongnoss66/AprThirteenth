@@ -1,8 +1,16 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
+
+def mypg(request):
+    user = User.objects.get(username=request.user.username)
+    context = {
+        'user':user
+    }
+    return render(request, 'accounts/mypg.html', context)
 
 # Create your views here.
 def login(request):
