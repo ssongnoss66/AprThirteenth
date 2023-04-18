@@ -47,4 +47,21 @@ def comments_create(request, review_pk):
         'comment_form': comment_form,
     }
     return render(request, 'reviews/detail.html', context)
+
+def detail(request, pk):
+    article = Article.objects.get(pk=pk)
+    comments = article.comment_set.all()    # 댓글 전체 조회
+    context = {
+        'comments':comments,
+        'article':article
+    }
+    return render(request, 'articles/detail.html', context)
+
+def likes(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    if article.like_users.filter(pk=request.user.pk).exists():  # 냅다 pk=request.pk 하면 안 됨 > request(요청한).user(사용자의).pk를 가져와야 됨
+        article.like_users.remove(request.user.pk)
+    else:
+        article.like_users.add(request.user)
+    return redirect('articles:index')
 ```

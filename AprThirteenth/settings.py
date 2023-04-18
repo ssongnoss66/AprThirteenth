@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'mainpg',
+    'articles',
     'reviews',
     'accounts',
     'django.contrib.admin',
