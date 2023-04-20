@@ -1,19 +1,29 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
+from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .models import User
 from reviews.models import Review
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
 
-def mypg(request):
-    user = User.objects.get(username=request.user.username)
-    reviews = Review.objects.all()
+@login_required
+def follow(request, user_pk):
+    User = get_user_model()
+    person = User.objects.get(pk=user_pk)
+    if person != request.user:
+        if person.followers.filter(pk=request.user.pk).exists():
+            person.followers.remove(request.user)
+        else:
+            person.followers.add(request.user)
+    return redirect('accounts:profile', person.username)
+
+def profile(request, username):
+    User = get_user_model()
+    person = User.objects.get(username=username)
     context = {
-        'user':user,
-        'reviews':reviews,
+        'person': person
     }
-    return render(request, 'accounts/mypg.html', context)
+    return render(request, 'accounts/profile.html', context)
 
 # Create your views here.
 def login(request):

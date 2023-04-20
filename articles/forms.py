@@ -29,11 +29,11 @@ class ArticleForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
-        label='내용',
+        label='댓글',
         widget=forms.Textarea(
             attrs = {
-                'class': 'comment-content',
-                'placeholder': '내용을 입력하세요',
+                'class': 'form-control',
+                'placeholder': '댓글을 입력하세요',
                 'rows': 2,
                 'cols': 100,
             }
